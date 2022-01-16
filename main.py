@@ -25,7 +25,7 @@ def main():
     if board.solve():
         print(board)
     else:
-        print('Unsolved')
+        print('Unsolvable.')
 
     spacing('#################################')
 
@@ -46,7 +46,7 @@ def main():
     if board.solve():
         print(board)
     else:
-        print('Unsolved')
+        print('Unsolvable.')
 
 
 if __name__ == '__main__':
