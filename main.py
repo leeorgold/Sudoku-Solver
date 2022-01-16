@@ -20,7 +20,6 @@ def main():
            ['.', '.', 4, '.', 7, '.', '.', '.', 2]]
 
     board = Board(lst)
-
     print(board)
     if board.solve():
         print(board)

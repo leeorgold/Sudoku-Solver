@@ -1,24 +1,27 @@
 class Board:
     def __init__(self, board: list[list]):
         # rows is the basic input
-        self._rows = board
+        self._rows: list[list[int | str]] = board
 
         # order by columns
-        self._columns = [[self._rows[x][y] for x in range(9)] for y in range(9)]
+        self._columns: list[list[int | str]] = [[self._rows[x][y] for x in range(9)] for y in range(9)]
 
         # all elements
-        self._all = []
+        self._all: list[int | str] = []
         for inner_list in self._rows:
             self._all += inner_list
 
         # order by blocks
-        self._blocks = []
+        self._blocks: list[list[int | str]] = []
         for j in range(0, 81, 27):
+            # for each line of blocks
             for i in range(3):
+                # for each block in a line
                 temp_ls = []
                 for k in range(0, 9, 3):
+                    # for each line in a block
                     temp_ls += self._all[j + (i + k) * 3: j + (i + k + 1) * 3]
-                self._blocks += [temp_ls]
+                self._blocks.append(temp_ls)
 
         # testing the given input
         self._test_all()
@@ -28,11 +31,11 @@ class Board:
     {} {} {} | {} {} {} | {} {} {}
     {} {} {} | {} {} {} | {} {} {}
     {} {} {} | {} {} {} | {} {} {}
-----------|-------|----------
+  --------+-------+-------- 
     {} {} {} | {} {} {} | {} {} {}
     {} {} {} | {} {} {} | {} {} {}
     {} {} {} | {} {} {} | {} {} {}
-----------|-------|----------
+  --------+-------+-------- 
     {} {} {} | {} {} {} | {} {} {}
     {} {} {} | {} {} {} | {} {} {}
     {} {} {} | {} {} {} | {} {} {}""".format(*self._all)
