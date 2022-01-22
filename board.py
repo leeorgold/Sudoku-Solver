@@ -1,7 +1,8 @@
 class Board:
     def __init__(self, board: list[list]):
         # rows is the basic input
-        self._rows: list[list[int | str]] = board
+        self._rows: list[list[int | str]] = self._get_copy_of_input(board)
+        # self._rows: list[list[int | str]] = board
 
         # order by columns
         self._columns: list[list[int | str]] = [[self._rows[x][y] for x in range(9)] for y in range(9)]
@@ -41,6 +42,13 @@ class Board:
     {} {} {} | {} {} {} | {} {} {}""".format(*self._all)
 
     @staticmethod
+    def _get_copy_of_input(rows: list[list[int | str]]) -> list[list[int | str]]:
+        copy = []
+        for row in rows:
+            copy.append(row.copy())
+        return copy
+
+    @staticmethod
     def _get_block_by_pos(x, y):
         return x // 3 * 3 + y // 3
 
@@ -58,13 +66,16 @@ class Board:
             for num in range(1, 10):
                 assert block.count(num) < 2, f"Board contains '{num}' more than once in block number {ind + 1}."
 
+    def _is_empty_pos(self, x, y):
+        assert isinstance(x, int) and 0 <= x <= 8, f"Invalid x. x should be an integer in range 0-8, {x=!r}"
+        assert isinstance(y, int) and 0 <= y <= 8, f"Invalid y. y should be an integer in range 0-8, {y=!r}"
+        return self._rows[x][y] == '.'
+
     def _check_value_in_pos(self, val: int, x: int, y: int):
         """The method checks if a value fits in a specific position."""
         # Input integrity check
         assert isinstance(val, int) and 1 <= val <= 9, f"Invalid value. val should be an integer in range 1-9, {val=!r}"
-        assert isinstance(x, int) and 0 <= x <= 8, f"Invalid x. x should be an integer in range 0-8, {x=!r}"
-        assert isinstance(y, int) and 0 <= y <= 8, f"Invalid y. y should be an integer in range 0-8, {y=!r}"
-        assert self._rows[x][y] == '.', f"Invalid position. Position must be empty."
+        assert self._is_empty_pos(x, y), f"Invalid position. Position must be empty."
 
         if val in self._rows[x]:
             return False
@@ -113,3 +124,11 @@ class Board:
                     return True
                 self._set_value('.', x, y)
         return False
+
+    def is_solved(self):
+        try:
+            self._all.index('.')
+        except ValueError:
+            return True
+        else:
+            return False
